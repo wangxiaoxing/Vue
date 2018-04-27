@@ -6,7 +6,9 @@
 清除浮动，详见http://www.ruanyifeng.com/blog/2012/11/compass.html<br>
 3.mapState 工具函数会将 store 中的 state 映射到局部计算属性中,mapGetters 工具函数会将 store 中的 getter 映射到局部计算属性中,mapActions 工具函数会将 store 中的 dispatch 方法映射到组件的 methods 中,mapMutations 工具函数会将 store 中的 commit 方法映射到组件的 methods 中,详见：http://www.imooc.com/article/14741<br>
 4.双向绑定的时候用v-model='',没有:model='';<br>
-
+5.当需要在<input>中利用v-model绑定Vuex store中的state时，一种办法是在<input>中绑定 value，然后侦听input或者change事件，在事件回调中调用action，
+  另一种办法是使用带有setter的双向绑定计算属性。第二种办法更加简洁，推荐第二种。https://vuex.vuejs.org/zh-cn/forms.html
+ 
 
 
 
