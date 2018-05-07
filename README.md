@@ -9,6 +9,7 @@
 5.当需要在<input>中利用v-model绑定Vuex store中的state时，一种办法是在<input>中绑定 value，然后侦听input或者change事件，在事件回调中调用action，
   另一种办法是使用带有setter的双向绑定计算属性。第二种办法更加简洁，推荐第二种。https://vuex.vuejs.org/zh-cn/forms.html<br>
 6.当需要在组件中获取模板中的某个元素节点时，使用ref属性，方法见CSS3Animaton组件<br>
+7.Vue中的计算属性和侦听属性是针对Vue实例上的数据变动的，css中定义的动态样式貌似无法监听？<br>
  
 
 
