@@ -11,7 +11,8 @@
 6.当需要在组件中获取模板中的某个元素节点时，使用ref属性，方法见CSS3Animaton组件<br>
 7.Vue中的计算属性和侦听属性是针对Vue实例上的数据变动的，css中定义的动态样式貌似无法监听？<br>
 8.当Vue打包上线的时候，可能会出现资源无法加载的情况，这时需要去检查组件中资源加载路径或设置打包配置文件(config/index.js)<br>
-9.绑定img元素的src时，用<img v-bind:src='',更多知识点移步https://www.jianshu.com/p/f82c5ecbd3a5
+9.绑定img元素的src时，用<img v-bind:src='',更多知识点移步https://www.jianshu.com/p/f82c5ecbd3a5<br>
+10.两个具有相同元素的数组==运算符返回false!
  
 
 
