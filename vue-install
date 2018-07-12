@@ -1,0 +1,20 @@
+NodeJS、npm、cnpm、vue-cli安装配置步骤
+
+1.安装node.js ，一直点击下一步即可。记住安装路径，默认是在C盘，安装完成后打开cmd,输入node -v，npm -v查看是否正常<br>
+2.进入node.js安装路径，在nodejs文件夹下新建"node_global"及"node_cache"两个文件夹。<br>
+打开cmd,输入<br>
+npm config set prefix "C:\Program Files\nodejs\node_global"（换成你电脑上的目录）<br>
+npm config set cache "C:\Program Files\nodejs\node_cache"（换成你电脑上的目录）<br>
+这样你全局安装的模块就放在了node_global\node_modules文件夹下，可以安装express看下效果<br>
+（注意：这里安装完执行require('express')还会报错，请执行下面的操作）<br>
+3.系统变量下新建"NODE_PATH"，输入<br>
+”C:\Program Files\nodejs\node_global\node_modules“（换成你电脑上的目录）<br>
+4.增加用户变量"PATH"：“C:\Program Files\nodejs\node_global\”（换成你电脑上的目录）<br>
+5.以上步骤都OK的话，我们可以再次开启cmd命令行，进入node，输入“require('express')”来测试下node的模块全局路径是否配置正确了。正确的话cmd会列出express的相关信息。<br>
+6.接下来就可以安装cnpm了。打开cmd,输入<br>
+npm install -g cnpm --registry=https://registry.npm.taobao.org<br>
+安装完毕后执行cnpm -v查看是否成功。<br>
+7.安装vue-cli 	<br>
+ cnpm n install vue-cli -g<br>
+安装完成后，输入vue -V查看是否成功。<br>
+备注：设置环境变量的时候除了在高级系统设置中设置外还可以用cmd 中setx命令，不清楚的百度一下即可。<br>
