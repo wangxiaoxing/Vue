@@ -1,0 +1,157 @@
+改变浏览器地址而不向服务器发出请求(更新视图而不重新请求页面)有两种方式:  
+1. 在地址中加入#以欺骗浏览器，地址的改变是由于正在进行页内导航 （通过改变hash值）
+2. 使用H5的window.history功能，使用URL的Hash来模拟一个完整的URL。
+
+Vue单页面应用默认工作原理：
+通过浏览器URL的#后面的hash变化就会引起页面变化的特性来把页面分成不同的小模块，然后通过修改hash来让页面展示我们想让看到的内容。 Vue-router提供mode参数来决定采用上述哪种方式
+
+动态路由匹配：
+相当于同一个组件，因为参数的不同展示不同的组件内容，在路由路径中使用动态路径参数。
+在path里用：表示是动态路由，{{$route.params.id}}拿到本路由里面参数的内容。
+使用路由参数的时候，如从/user/foo导航到/user/bar时，原来的组件实例会被复用，组件的生命周期钩子不会再被调用，可以通过监听$route对象来对路由参数的变化做出响应。
+当同一个路径可以匹配多个路由时，匹配的优先级按照路由的定义顺序，谁先定义的，谁的优先级最高。
+
+嵌套路由：
+在路由里面嵌套一个路由：
+ { path: '/user/:id', component: User,
+  children: [
+  {
+   // 当 /user/:id/profile 匹配成功，
+   // UserProfile 会被渲染在 User 的 <router-view> 中
+   path: 'profile',
+   component: UserProfile
+  },
+  {
+   // 当 /user/:id/posts 匹配成功
+   // UserPosts 会被渲染在 User 的 <router-view> 中
+   path: 'posts',
+   component: UserPosts
+  }，
+  {
+   // 当 /user/:id 匹配成功，
+  // UserHome 会被渲染在 User 的 <router-view> 中
+   path:'',
+   component:UserHome
+  }
+  ]
+ }
+ 
+
+编程式导航
+声明式：<router-link :to="...">  
+编程式导航：router.push():   跳转到指定path   设置新的路由添加历史记录并更新视图,常用情况是直接点击切换视图 
+           router.go(n)： 前进后退   不添加历史记录
+           router.replace()   修改路由但是不添加历史记录，而是替换当前的history记录。 替换当前路由并更新视图，常用情况是地址栏直接输入新地址。流程与push基本一致
+
+
+命名路由
+给每个路由定义一个名字
+
+命名视图：
+在界面中拥有多个单独命名的视图，而不是只有一个单独的出口，如：
+<router-view class="view one"></router-view>
+<router-view class="view two" name="a"></router-view>
+<router-view class="view three" name="b"></router-view>
+//多个视图需要多个组件，确保正确使用components配置
+{
+   path: '/',
+   components: {
+   default: Foo,
+    a: Bar,
+    b: Baz
+   }
+  }
+
+
+
+重定向和别名：
+『重定向』的意思是，当用户访问 /a时，URL 将会被替换成 /b，然后匹配路由为 /b 
+{ path: '/a', redirect: '/b' } 
+别名的意思：/a 的别名是 /b，意味着，当用户访问 /b 时，URL 会保持为 /b，但是路由匹配则为 /a，就像用户访问 /a 一样。 
+{ path: '/a', component: A, alias: '/b' } 
+
+history模式
+vue-router默认hash模式—使用URL的hash来模拟一个完整的URL，于是当URL改变时，页面不会重新加载。
+如果不想要很丑的 hash，我们可以用路由的 history 模式，这种模式充分利用 history.pushState API 来完成 URL 跳转而无须重新加载页面。 
+const router = new VueRouter({
+ mode: 'history',
+ routes: [...]
+})
+
+导航守卫：通过跳转或取消的方式守卫导航。导航表示路由正在发生改变。
+有多种机会植入路由导航过程中：全局的, 单个路由独享的, 或者组件级的。 
+全局守卫：
+const router = new VueRouter({ ... })
+router.beforeEach((to, from, next) => {
+ // ...
+})
+全局后置守卫：
+router.afterEach((to, from) => {
+ // ...
+})
+
+
+路由独享的守卫:在路由配置上直接定义beforeEnter守卫
+{
+path:'/params/:newsId(\\d+)/:newsTitle',
+component:Params,
+name:'Params',
+beforeEnter:(to,from,next)=>{
+console.log('我进入了params模板');
+console.log(to);
+console.log(from);
+next();
+}
+}
+
+组件内的守卫:在组件内定义
+ beforeRouteEnter (to, from, next) {
+  // 在渲染该组件的对应路由被 confirm 前调用
+  // 不！能！获取组件实例 `this`
+  // 因为当守卫执行前，组件实例还没被创建
+ },
+ beforeRouteUpdate (to, from, next) {
+  // 在当前路由改变，但是该组件被复用时调用
+  // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
+  // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
+  // 可以访问组件实例 `this`
+ },
+ beforeRouteLeave (to, from, next) {
+  // 导航离开该组件的对应路由时调用
+  // 可以访问组件实例 `this`
+ }
+路由元信息
+他可以把路由的父路径都列举出来，完成一些任务，比如登录，user 组件需要登录，那么user下面的foo组件也需要，那么可以通过这个属性 来检测这个路由线上 的一些状态。 
+const router = new VueRouter({
+ routes: [
+  {
+   path: '/foo',
+   component: Foo,
+   children: [
+    {
+     path: 'bar',
+     component: Bar,
+     // a meta field
+     meta: { requiresAuth: true }
+    }
+   ]
+  }
+ ]
+})
+路由记录：routes配置中的每个路由对象为路由记录
+一个路由匹配到的所有路由记录会暴露为 $route 对象（还有在导航守卫中的路由对象）的 $route.matched 数组。因此，我们需要遍历 $route.matched 来检查路由记录中的 meta 字段 
+
+数据获取：
+有时候，进入某个路由后，需要从服务器获取数据。例如，在渲染用户信息时，你需要从服务器获取用户的数据。我们可以通过两种方式来实现：
+导航完成之后获取：先完成导航，然后在接下来的组件生命周期钩子中获取数据。在数据获取期间显示“加载中”之类的指示。
+当你使用这种方式时，我们会马上导航和渲染组件，然后在组件的 created 钩子中获取数据。这让我们有机会在数据获取期间展示一个 loading 状态，还可以在不同视图间展示不同的 loading 状态。 
+导航完成之前获取：导航完成前，在路由进入的守卫中获取数据，在数据获取成功后执行导航。
+通过这种方式，我们在导航转入新的路由前获取数据。我们可以在接下来的组件的 beforeRouteEnter 守卫中获取数据，当数据获取成功后只调用 next 方法。 
+
+
+
+
+
+
+
+
