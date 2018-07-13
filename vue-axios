@@ -1,0 +1,21 @@
+引入axios及跨域使用
+1.使用cnpm安装axios    cnpm install axios --save-dev
+2.在main.js中引入axios  import axios from 'axios'
+  修改Vue.prototype     Vue.prototype.$axios=axios
+3.完成上述步骤就能直接在组件的methods中使用this.$axios命令了 
+
+
+使用vue-cli这种脚手架工具开发时，由于项目本身启动本地服务是需要占用一个端口的，所以前后端调试的时候必然会产生跨域的问题。
+在使用webpack做构建工具的项目中使用proxyTable代理实现跨域是一种比较方便的选择。
+在项目目录中找到根目录下config文件夹下的index.js文件，找到dev对象，修改dev对象中的proxyTable属性，如
+proxyTable: {
+    '/api': {
+      target: 'http://www.abc.com',  //目标接口域名
+      changeOrigin: true,  //是否跨域
+      pathRewrite: {
+        '^/api': '/api'   //重写接口
+      }
+ },
+ 保存后就会将本地端口的一个请求代理到了http://www.abc.com这一域名下：即
+'http://localhost:8080/api' ===> 'http://www.abc.com/api'
+这样就可以接收到前端传过来的数据啦，非常方便！
