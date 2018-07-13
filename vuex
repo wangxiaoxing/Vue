@@ -1,0 +1,20 @@
+vue-cli中引入vuex:
+ 1. 在src文件夹下新建一个store文件夹，store文件夹下新建一个index.js,index.js内容可以如下：
+import Vue from 'vue'
+import Vuex from 'vuex'
+Vue.use(Vuex);
+const state={
+    lists:[]
+}
+const mutations={
+    saveLists(state,value){
+        state.lists=value;
+    }
+}
+export default new Vuex.Store({
+    state,
+    mutations
+})
+2.在main.js中导入store:
+  import store from './store'
+  在new Vue({})中加入store,
