@@ -18,3 +18,5 @@ npm install -g cnpm --registry=https://registry.npm.taobao.org<br>
  cnpm n install vue-cli -g<br>
 安装完成后，输入vue -V查看是否成功。<br>
 备注：设置环境变量的时候除了在高级系统设置中设置外还可以用cmd 中setx命令，不清楚的百度一下即可。<br>
+8.vue-cli快速搭建<br>
+vue init webpack ‘projectname’<br>
