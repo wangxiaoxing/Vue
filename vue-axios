@@ -1,5 +1,5 @@
 引入axios及跨域使用
-1.使用cnpm安装axios    cnpm install axios --save-dev
+1.使用cnpm安装axios    cnpm install axios --save
 2.在main.js中引入axios  import axios from 'axios'
   修改Vue.prototype     Vue.prototype.$axios=axios
 3.完成上述步骤就能直接在组件的methods中使用this.$axios命令了 
