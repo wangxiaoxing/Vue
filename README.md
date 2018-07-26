@@ -12,7 +12,8 @@
 7.Vue中的计算属性和侦听属性是针对Vue实例上的数据变动的，css中定义的动态样式貌似无法监听？<br>
 8.当Vue打包上线的时候，可能会出现资源无法加载的情况，这时需要去检查组件中资源加载路径或设置打包配置文件(config/index.js)<br>
 9.绑定img元素的src时，用<img v-bind:src='',更多知识点移步https://www.jianshu.com/p/f82c5ecbd3a5<br>
-10.两个具有相同元素的数组==运算符返回false!
+10.两个具有相同元素的数组==运算符返回false!<br>
+11.当组件中一个计算属性的值依赖的是vuex中state的值时，不能直接在组件中对这个计算属性进行修改，需要修改vuex中state的值（通过mutation）。
  
  
  
