@@ -35,3 +35,24 @@
 webpack4.0以上不支持extract -text-webpack-plugin的解决办法
 
  npm install extract-text-webpack-plugin@next  
+
+5个概念：
+1.入口[entry]：指示webpack应该使用哪个模块，来作为构建其内部依赖图的开始。
+
+2.输出[output]:告诉 webpack 在哪里输出它所创建的 bundles，以及如何命名这些文件，默认值为 ./dist。
+
+3.loader(module):让 webpack 能够去处理那些非 JavaScript 文件（webpack 自身只理解 JavaScript）。loader 可以将所有类型的文件转换为 webpack 能够处理的有效模块.
+
+  module: {
+    rules: [
+      { test: /\.txt$/, use: 'raw-loader' }
+    ]
+  }
+  
+4.插件[plugins]:执行范围更广，从打包优化和压缩，一直到重新定义环境中的变量。插件接口功能极其强大，可以用来处理各种各样的任务。
+
+5.模式：设置mode参数为development或production，来启用相应模式下的webpack内置的优化。
+
+module.exports = {
+  mode: 'production'
+};
