@@ -56,3 +56,7 @@ webpack4.0以上不支持extract -text-webpack-plugin的解决办法
 module.exports = {
   mode: 'production'
 };
+
+6.webpack好文：
+https://segmentfault.com/a/1190000010871559
+
