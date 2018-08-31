@@ -1,0 +1,125 @@
+
+NodeJS、npm、cnpm、vue-cli、webpack、nginx、node后台安装使用配置步骤
+
+1.安装node.js ，一直点击下一步即可。记住安装路径，默认是在C盘，安装完成后打开cmd,输入node -v，npm -v查看是否正常
+2.进入node.js安装路径，在nodejs文件夹下新建"node_global"及"node_cache"两个文件夹。
+
+打开cmd,输入
+npm config set prefix "C:\Program Files\nodejs\node_global"（换成你电脑上的目录）
+npm config set cache "C:\Program Files\nodejs\node_cache"（换成你电脑上的目录）
+这样你全局安装的模块就放在了node_global\node_modules文件夹下，可以安装express看下效果
+（注意：这里安装完执行require('express')还会报错，请执行下面的操作）
+3.系统变量下新建"NODE_PATH"，输入
+”C:\Program Files\nodejs\node_global\node_modules“（换成你电脑上的目录）
+4.增加用户变量"PATH"：“C:\Program Files\nodejs\node_global\”（换成你电脑上的目录）
+5.以上步骤都OK的话，我们可以再次开启cmd命令行，进入node，输入“require('express')”来测试下node的模块全局路径是否配置正确了。正确的话cmd会列出express的相关信息。
+6.接下来就可以安装cnpm了。打开cmd,输入
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+安装完毕后执行cnpm -v查看是否成功。
+7.安装vue-cli 	
+ cnpm n install vue-cli -g
+安装完成后，输入vue -V查看是否成功。
+备注：设置环境变量的时候除了在高级系统设置中设置外还可以用cmd 中setx命令，不清楚的百度一下即可。
+
+
+
+二.手动实现vue-cli
+1.cnpm init 生成package.json
+2.cnpm install --save-dev webpack
+2.新建文件夹，index.html等文件目录
+
+
+3.安装vue cnpm install --save vue
+4.写webpack.config.js文件
+5.安装webpack-dev-server   cnpm install webpack-dev-server --save-dev
+6.安装loader cnpm install style-loader --save-dev
+             cnpm install --save-dev css-loader
+             cnpm install --save-dev babel-core babel-loader babel-preset-env
+             cnpm install --save-dev babel-plugin-transform-runtime
+             cnpm install vue-template-compiler --save-dev
+
+7.安装插件plugin
+      
+      cnpm install --save-dev html-webpack-plugin
+
+8.安装vueloader 
+      cnpm install vue-loader --save-dev
+
+9.注意webpack\\\ webpack-dev-servr\\\vue-loader的版本号要修改      
+8.cnpm install 
+9.cnpm run 
+11.main.js中new Vue({
+    el: '#app',s
+    render: (c) => { 
+        return c(App);
+    }
+})
+12.cnpm install vue-router --save
+   cnpm install vuex --save
+   cnpm install axios --save
+   cnpm install mint-ui --save
+   cnpm install autoprefixer-loader --save-dev
+
+13.全局引入zepto方法：
+  1.cnpm install zepto --save
+  2.cnpm install exports-loader script-loader --save-dev
+  3.webpack.config.js配置 
+    {
+                test: require.resolve('zepto'),
+                loader: 'exports-loader?window.$!script-loader'
+     }
+     new webpack.ProvidePlugin({
+            $:'zepto'
+        })
+
+14.安装mock.js
+cnpm install mockjs --save-dev
+配置main.js 新建mock目录
+
+
+三、nignx
+1.nginx作为静态页面服务器
+（1）将静态页面复制到nginx文件夹下的html文件夹下即可
+（2）可以修改端口，默认是80端口
+server {
+      listen       8094; #监听端口 默认是80
+      server_name  localhost; #       #charset koi8-r;       #access_log  logs/host.access.log  main;      location / {
+          root   html;#文件根目录
+          index  index.html index.htm;#默认起始页
+      }
+}
+（3）浏览器打开localhost:8094即可（记得先启动nginx哈）
+2.反向代理——转发
+（1）修改配置文件
+ server {
+        listen       8081; #监听端口
+        server_name  localhost:9527; #表示监听到之后需要转到哪里去
+        #charset koi8-r;
+        #access_log  logs/host.access.log  main;
+        location / {    #location：表示匹配的路径，这时配置了/表示所有请求都被匹配到这里
+	proxy_pass  http://localhost:9527;
+  }
+}
+（2）浏览器打开localhost:8081会加载localhost:9527的内容（修改后记得重启哈）
+3.反向代理——ajax跨域
+(1)假设发起ajax的页面在http://localhost:8083，ajax的url为'/api/comment'
+ 而node服务器的端口为http://localhost:8085/comment
+(2)修改配置文件
+
+server {
+        listen       8083;
+        server_name  localhost;  #监听的域名
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        
+		location /api/ {
+		  proxy_pass  http://127.0.0.1:8085/;  #转发的目的域名
+		}
+}
+4.vue开发者环境貌似除了在devserver中设置proxy外无法使用nginx进行反向代理，打包后的文件可以用nginx进行代理。
+
+四、node后台：
+https://segmentfault.com/a/1190000008176208
